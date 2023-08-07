@@ -21,23 +21,16 @@ def check(space):
 
 
 def win(a1, a2, a3, b1, b2, b3, c1, c2, c3):
-    if ((a1 == 'x' and a2 == 'x' and a3 == 'x') or
-       (b1 == 'x' and b2 == 'x' and b3 == 'x') or
-       (c1 == 'x' and c2 == 'x' and c3 == 'x') or
-       (a1 == 'x' and b1 == 'x' and c1 == 'x') or
-       (a2 == 'x' and b2 == 'x' and c2 == 'x') or
-       (a3 == 'x' and b3 == 'x' and c3 == 'x') or
-       (a1 == 'x' and b2 == 'x' and c3 == 'x') or
-       (a3 == 'x' and b2 == 'x' and c1 == 'x')):
+    winner = ''
+    if b1 == b2 == b3 or a2 == b2 == c2 or a1 == b2 == c3 or a3 == b2 == c1:
+        winner = b2
+    if (a1 == a2 == a3 or a1 == b1 == c1) and a1 != ' ':
+        winner = a1
+    if (c1 == c2 == c3 or a3 == b3 == c3) and c3 != ' ':
+        winner = c3
+    if winner == 'x':
         return 'ПОБЕДИЛИ КРЕСТИКИ!!!'
-    if ((a1 == 'o' and a2 == 'o' and a3 == 'o') or
-       (b1 == 'o' and b2 == 'o' and b3 == 'o') or
-       (c1 == 'o' and c2 == 'o' and c3 == 'o') or
-       (a1 == 'o' and b1 == 'o' and c1 == 'o') or
-       (a2 == 'o' and b2 == 'o' and c2 == 'o') or
-       (a3 == 'o' and b3 == 'o' and c3 == 'o') or
-       (a1 == 'o' and b2 == 'o' and c3 == 'o') or
-       (a3 == 'o' and b2 == 'o' and c1 == 'o')):
+    if winner == 'o':
         return 'ПОБЕДИЛИ НОЛИКИ!!!'
     return 0
 
@@ -72,60 +65,33 @@ print('Что же, приступим к игре!')
 spaces = {'1a', '1b', '1c', '2a', '2b', '2c', '3a', '3b', '3c'}
 
 while win(a1, a2, a3, b1, b2, b3, c1, c2, c3) == 0 and len(spaces) != 0:
-    print('')
-    print('')
-    print('ХОДЯТ КРЕСТИКИ (x)')
-    turn = input('Впишите название клетки: ')
-    turn = check(turn)
-    if turn == '1a':
-        a1 = 'x'
-    elif turn == '1b':
-        b1 = 'x'
-    elif turn == '1c':
-        c1 = 'x'
-    elif turn == '2a':
-        a2 = 'x'
-    elif turn == '2b':
-        b2 = 'x'
-    elif turn == '2c':
-        c2 = 'x'
-    elif turn == '3a':
-        a3 = 'x'
-    elif turn == '3b':
-        b3 = 'x'
-    elif turn == '3c':
-        c3 = 'x'
-    else:
-        print('что-то пошло не по плану')
-    row_a = f'a  {a1} | {a2} | {a3} '
-    row_b = f'b  {b1} | {b2} | {b3} '
-    row_c = f'c  {c1} | {c2} | {c3} '
-    spaces.remove(turn)
-    field(row_a, row_b, row_c)
-    if win(a1, a2, a3, b1, b2, b3, c1, c2, c3) == 0 and len(spaces) != 0:
+    for symbol in ['x', 'o']:
         print('')
         print('')
-        print('ХОДЯТ НОЛИКИ (o)')
+        if symbol == 'x':
+            print('ХОДЯТ КРЕСТИКИ (x)')
+        elif symbol == 'o':
+            print('ХОДЯТ НОЛИКИ (o)')
         turn = input('Впишите название клетки: ')
         turn = check(turn)
         if turn == '1a':
-            a1 = 'o'
+            a1 = symbol
         elif turn == '1b':
-            b1 = 'o'
+            b1 = symbol
         elif turn == '1c':
-            c1 = 'o'
+            c1 = symbol
         elif turn == '2a':
-            a2 = 'o'
+            a2 = symbol
         elif turn == '2b':
-            b2 = 'o'
+            b2 = symbol
         elif turn == '2c':
-            c2 = 'o'
+            c2 = symbol
         elif turn == '3a':
-            a3 = 'o'
+            a3 = symbol
         elif turn == '3b':
-            b3 = 'o'
+            b3 = symbol
         elif turn == '3c':
-            c3 = 'o'
+            c3 = symbol
         else:
             print('что-то пошло не по плану')
         row_a = f'a  {a1} | {a2} | {a3} '
@@ -133,6 +99,8 @@ while win(a1, a2, a3, b1, b2, b3, c1, c2, c3) == 0 and len(spaces) != 0:
         row_c = f'c  {c1} | {c2} | {c3} '
         spaces.remove(turn)
         field(row_a, row_b, row_c)
+        if win(a1, a2, a3, b1, b2, b3, c1, c2, c3) != 0 or len(spaces) == 0:
+            break
 print('')
 print('')
 if win(a1, a2, a3, b1, b2, b3, c1, c2, c3) == 0:
